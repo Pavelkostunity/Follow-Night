@@ -8,12 +8,19 @@ public class Player : MonoBehaviour
     Animator myAnimator;
     [SerializeField] float runSpeed = 5f;
     [SerializeField] float jumpSpeed = 5f;
-    [SerializeField] float climbSpeed = 5f;
     bool isAlive = true;
     CapsuleCollider2D myBodyCollider;
     BoxCollider2D myFeet;
+    PolygonCollider2D myhitbox;
+    [SerializeField] int health = 200;
     float gravityScaleAtStart;
     [SerializeField] Vector2 deathkick = new Vector2(25f,25f);
+    [Header("Sword Settings")]
+    [SerializeField] GameObject sword;
+    [SerializeField] GameObject horz;
+    [SerializeField] GameObject up;
+    [SerializeField] GameObject bot;
+    Vector2 pushway;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,18 +28,17 @@ public class Player : MonoBehaviour
         myAnimator = GetComponent<Animator>();
         myBodyCollider = GetComponent<CapsuleCollider2D>();
         myFeet = GetComponent<BoxCollider2D>();
+        myhitbox = GetComponent<PolygonCollider2D>();
         gravityScaleAtStart = myRigidBody.gravityScale;
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (!isAlive) { return; };
         Run();
         FlipSprite();
         Jump();
-        ClimbLadder();
         Die();
+        Hit();
     }
     private void Run()
     {
@@ -64,20 +70,25 @@ public class Player : MonoBehaviour
             transform.localScale = new Vector2(Mathf.Sign(myRigidBody.velocity.x), 1f);
         }
     }
-    private void ClimbLadder()
+    private void Hit()
     {
-        if (!myFeet.IsTouchingLayers(LayerMask.GetMask("Ladder"))) 
+        GameObject direct;
+        if (Input.GetButtonDown("Fire1"))
         {
-            myAnimator.SetBool("Climbing", false);
-            myRigidBody.gravityScale = gravityScaleAtStart;
-            return;
+            if ((!myFeet.IsTouchingLayers(LayerMask.GetMask("Ground"))) && (Input.GetKey("down")))
+            {
+                direct = bot;
+                pushway = new Vector2(100, 100);
+            }
+            else if (Input.GetKey("up"))
+            {
+                direct = up;
+                pushway = new Vector2(0, 0);
+            }
+            else direct = horz;
+            pushway = new Vector2(0, 20);
+            Instantiate(sword, direct.transform.position, direct.transform.rotation, direct.transform);
         }
-        float controlThrow = Input.GetAxis("Vertical");
-        Vector2 climbVelocity = new Vector2(myRigidBody.velocity.x, controlThrow * climbSpeed);
-        myRigidBody.velocity = climbVelocity;
-        myRigidBody.gravityScale = 0f;
-        bool playerHasVerticalSpeed = Mathf.Abs(myRigidBody.velocity.y) > Mathf.Epsilon;
-        myAnimator.SetBool("Climbing", playerHasVerticalSpeed);
     }
     private void Die()
     {
@@ -88,5 +99,9 @@ public class Player : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = deathkick;
             FindObjectOfType<GameSession>().ProcessPlayerDeath();
         }
+    }
+    public void Pushback(Vector2 pushway)
+    {
+        myRigidBody.velocity = pushway;
     }
 }
