@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -13,14 +14,12 @@ public class Player : MonoBehaviour
     BoxCollider2D myFeet;
     PolygonCollider2D myhitbox;
     [SerializeField] int health = 200;
-    float gravityScaleAtStart;
     [SerializeField] Vector2 deathkick = new Vector2(25f,25f);
     [Header("Sword Settings")]
     [SerializeField] GameObject sword;
     [SerializeField] GameObject horz;
     [SerializeField] GameObject up;
     [SerializeField] GameObject bot;
-    Vector2 pushway;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +28,6 @@ public class Player : MonoBehaviour
         myBodyCollider = GetComponent<CapsuleCollider2D>();
         myFeet = GetComponent<BoxCollider2D>();
         myhitbox = GetComponent<PolygonCollider2D>();
-        gravityScaleAtStart = myRigidBody.gravityScale;
     }
     void Update()
     {
@@ -37,7 +35,6 @@ public class Player : MonoBehaviour
         Run();
         FlipSprite();
         Jump();
-        Die();
         Hit();
     }
     private void Run()
@@ -78,30 +75,64 @@ public class Player : MonoBehaviour
             if ((!myFeet.IsTouchingLayers(LayerMask.GetMask("Ground"))) && (Input.GetKey("down")))
             {
                 direct = bot;
-                pushway = new Vector2(100, 100);
             }
             else if (Input.GetKey("up"))
             {
                 direct = up;
-                pushway = new Vector2(0, 0);
             }
             else direct = horz;
-            pushway = new Vector2(0, 20);
             Instantiate(sword, direct.transform.position, direct.transform.rotation, direct.transform);
         }
     }
-    private void Die()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")))
+        if (myhitbox.IsTouchingLayers(LayerMask.GetMask("Enemy")) || myFeet.IsTouchingLayers(LayerMask.GetMask("Enemy")))
         {
-            isAlive = false;
-            myAnimator.SetTrigger("Die");
-            GetComponent<Rigidbody2D>().velocity = deathkick;
-            FindObjectOfType<GameSession>().ProcessPlayerDeath();
+            DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
+            bool invisibl = myAnimator.GetBool("GotHit");
+            if (!damageDealer)
+            {
+                return;
+            }
+            if (invisibl)
+            {
+                return;
+            }
+            ProcessHit(damageDealer);
         }
+    }
+    private void ProcessHit(DamageDealer damageDealer)
+    {
+        health -= damageDealer.GetDamage();
+        myAnimator.SetBool("GotHit", true);
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+    public void Die()
+    {
+        StartCoroutine(Death());
+    }
+    IEnumerator Death()
+    {
+        Time.timeScale = 0.2f;
+        FindObjectOfType<YouDead>().ShowDeathText();
+        yield return new WaitForSecondsRealtime(2f);
+        Time.timeScale = 1f;
+        var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
     }
     public void Pushback(Vector2 pushway)
     {
         myRigidBody.velocity = pushway;
+    }
+    public void StopHitAn()
+    {
+        myAnimator.SetBool("GotHit", false);
+    }
+    public int GetHealth()
+    {
+        return health;
     }
 }
