@@ -19,7 +19,7 @@ TagManager:
   - Hazards
   - Interactables
   - Sword
-  - 
+  - BossBackground
   - 
   - 
   - 
@@ -43,6 +43,9 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 4171739181
+    locked: 0
+  - name: BossBackground
+    uniqueID: 4223061477
     locked: 0
   - name: Ladders
     uniqueID: 2340680555

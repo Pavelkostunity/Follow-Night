@@ -31,10 +31,10 @@ public class Enemy : MonoBehaviour
        {
             act.SetActive(true);      
        }
-        foreach (GameObject deact in deactivate)
-        {
+       foreach (GameObject deact in deactivate)
+       {
             deact.SetActive(false);
-        }
-        Destroy(gameObject);
+       }
+       Destroy(gameObject);
     }
 }
