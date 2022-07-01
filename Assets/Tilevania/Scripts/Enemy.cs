@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] float health = 100;
     [SerializeField] GameObject[] activate;
     [SerializeField] GameObject[] deactivate;
+    bool inv = false;
     private void OnTriggerEnter2D(Collider2D other)
     {
         DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
@@ -19,10 +20,13 @@ public class Enemy : MonoBehaviour
 
     private void ProcessHit(DamageDealer damageDealer)
     {
-        health -= damageDealer.GetDamage();
-        if (health <= 0)
+        if (inv == false)
         {
-            Die();
+            health -= damageDealer.GetDamage();
+            if (health <= 0)
+            {
+                Die();
+            }
         }
     }
     private void Die()
@@ -36,5 +40,13 @@ public class Enemy : MonoBehaviour
             deact.SetActive(false);
        }
        Destroy(gameObject);
+    }
+    public void TurnOnInvin()
+    {
+        inv = true;
+    }
+    public void TurnOffInvin()
+    {
+        inv = false;
     }
 }

@@ -10,13 +10,15 @@ public class Boss : MonoBehaviour
     [SerializeField] float health = 100;
     [SerializeField] GameObject attackpos;
     int attackcount = 0;
+    [SerializeField] int numberofattacks = 6;
     [SerializeField] float timebetweenattacks = 10f;
     [SerializeField] Enemy carl;
     [SerializeField] Enemy max;
     [SerializeField] Enemy beam;
+    [SerializeField] Enemy point;
     [SerializeField] GameObject[] enemyspawnpoints;
     [SerializeField] GameObject[] beamsspawnpoints;
-    [SerializeField] Player player;
+    Player player;
     // [SerializeField] Beam beam;
     // [SerializeField] Point point;
 
@@ -27,6 +29,7 @@ public class Boss : MonoBehaviour
         myAnimator = GetComponent<Animator>();
         mycollider = GetComponent<BoxCollider2D>();
         StartCoroutine(Entering(4f));
+        player = FindObjectOfType<Player>();
     }
     IEnumerator Entering(float time)
     {
@@ -45,7 +48,7 @@ public class Boss : MonoBehaviour
     IEnumerator ChooseAttack()
     {
         Debug.Log("I'm Choosing attack");
-        if (attackcount == 3)
+        if (attackcount == numberofattacks)
         {
             StartCoroutine(Transfer());
         }
@@ -127,20 +130,21 @@ public class Boss : MonoBehaviour
     IEnumerator Attack4()
     {
         Debug.Log("Attack 4");
-        int j = 0;
-        while (j<5)
-        {
-            StartCoroutine(SpawnAPoint());
-            j++;
-        }
-        yield return new WaitForSeconds(timebetweenattacks-3f);
+        StartCoroutine(SpawnAPoint());
+        yield return new WaitForSeconds(timebetweenattacks);
         attackcount++;
         StartCoroutine(ChooseAttack());
     }
     IEnumerator SpawnAPoint()
     {
-        //Spawn a point Instantiate(point, player.transform);
-        yield return new WaitForSeconds(2f);
+        int j = 0;
+        while (j < 5)
+        {
+            Vector3 playerpos = new Vector3 (player.transform.position.x,player.transform.position.y,player.transform.position.z);
+            Instantiate(point,playerpos, Quaternion.identity);
+            yield return new WaitForSeconds(0.5f);
+            j++;
+        }
     }
     // Update is called once per frame
     void Update()

@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     [SerializeField] float runSpeed = 5f;
     [SerializeField] float jumpSpeed = 5f;
     bool isAlive = true;
-    CapsuleCollider2D myBodyCollider;
     BoxCollider2D myFeet;
     PolygonCollider2D myhitbox;
     [SerializeField] int health = 200;
@@ -25,7 +24,6 @@ public class Player : MonoBehaviour
     {
         myRigidBody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
-        myBodyCollider = GetComponent<CapsuleCollider2D>();
         myFeet = GetComponent<BoxCollider2D>();
         myhitbox = GetComponent<PolygonCollider2D>();
     }
