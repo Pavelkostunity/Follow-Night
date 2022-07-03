@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
+    [Header("Common Stuff")]
     Rigidbody2D myRigidBody;
     Animator myAnimator;
     BoxCollider2D mycollider;
-    [SerializeField] float health = 100;
+    [SerializeField] int health = 100;
     [SerializeField] GameObject attackpos;
     int attackcount = 0;
+    [Header("Attack phaze")]
     [SerializeField] int numberofattacks = 6;
     [SerializeField] float timebetweenattacks = 10f;
     [SerializeField] Enemy carl;
@@ -19,8 +21,12 @@ public class Boss : MonoBehaviour
     [SerializeField] GameObject[] enemyspawnpoints;
     [SerializeField] GameObject[] beamsspawnpoints;
     Player player;
-    // [SerializeField] Beam beam;
-    // [SerializeField] Point point;
+    bool inv = false;
+    [Header ("Tranfer phaze")]
+    int damageduringtranfer = 0;  
+    [SerializeField] Bossroom bossroom;
+    [SerializeField] BossFightStart bossfightcontroller;
+    [SerializeField] GameObject bossreachpoints;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +34,7 @@ public class Boss : MonoBehaviour
         myRigidBody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         mycollider = GetComponent<BoxCollider2D>();
+        inv = true;
         StartCoroutine(Entering(4f));
         player = FindObjectOfType<Player>();
     }
@@ -72,23 +79,6 @@ public class Boss : MonoBehaviour
             }
         }
         yield return null;
-    }
-    IEnumerator Transfer()
-    {
-        Debug.Log("Transfer");
-        int damagedealt = 0;
-        // убрать боссу неуязвимость, закрутить зону, отодвинуть камеру, добавить какие-то периодичные атаки
-        while (damagedealt <20)
-            {
-                yield return null;
-            }
-        StartCoroutine(EndTransfer());
-
-    }
-    IEnumerator EndTransfer()
-    {
-        yield return null;
-        //вернуть боссу неуязвимость и в целом зону на место
     }
     IEnumerator Attack1()
     {
@@ -146,14 +136,72 @@ public class Boss : MonoBehaviour
             j++;
         }
     }
+    private void SpawnEnemy(GameObject[] spawnpoints, Enemy enemy)
+    {
+        int j = Mathf.RoundToInt(Random.Range(0, spawnpoints.Length));   //можно написать метод нормальный ибо часто используется
+        Instantiate(enemy, spawnpoints[j].transform);
+    }
+    IEnumerator Transfer()
+    {
+        Debug.Log("Transfer");
+        damageduringtranfer = 0;
+        bossroom.StartRolling(); // start of room rolling
+        bossfightcontroller.StartTransfer(); //camera movement
+        myAnimator.SetBool("Idle", true);
+        bossreachpoints.SetActive(true);
+        inv = false;
+        // убрать боссу неуязвимость, закрутить зону, отодвинуть камеру, добавить какие-то периодичные атаки
+        while (damageduringtranfer < 20)
+        {
+            yield return null;
+        }
+        StartCoroutine(EndTransfer());
+
+    }
+    IEnumerator EndTransfer()
+    {
+        Debug.Log("EndTransfer");
+        bossroom.StopRolling();
+        bossfightcontroller.EndTranfer();
+        myAnimator.SetBool("Idle", false);
+        bossreachpoints.SetActive(false);
+        inv = true;
+        yield return new WaitForSeconds(3f);
+        attackcount = 0;
+        StartCoroutine(ChooseAttack());
+    }
     // Update is called once per frame
     void Update()
     {
         
     }
-    private void SpawnEnemy(GameObject[] spawnpoints, Enemy enemy)
+      private void OnTriggerEnter2D(Collider2D other)
     {
-        int j = Mathf.RoundToInt(Random.Range(0, spawnpoints.Length));   //можно написать метод нормальный ибо часто используется
-        Instantiate(enemy, spawnpoints[j].transform);
+        DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
+        if (!damageDealer)
+        {
+            return;
+        }
+        ProcessHit(damageDealer);
+    }
+    private void ProcessHit(DamageDealer damageDealer)
+    {
+        if (inv == false)
+        {
+            health -= damageDealer.GetDamage();
+            damageduringtranfer++;
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
+    }
+    private void Die()
+    {
+
+    }
+    public int GetHealth()
+    {
+        return health;
     }
 }

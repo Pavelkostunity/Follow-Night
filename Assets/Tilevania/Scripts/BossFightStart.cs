@@ -23,4 +23,12 @@ public class BossFightStart : MonoBehaviour
             deact.SetActive(false);
         }
     }
+    public void StartTransfer()
+    {
+        myanimator.SetBool("Bosstransfer", true);
+    }
+    public void EndTranfer()
+    {
+        myanimator.SetBool("Bosstransfer", false);
+    }
 }
