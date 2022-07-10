@@ -9,9 +9,13 @@ public class Max : MonoBehaviour
     [SerializeField] float projectileSpeed = 2f;
     [SerializeField] float projectileFiringPeriod = 2f;
     bool isfacingright = true;
+    Animator myanimator;
+    [SerializeField] float deltax = 0f;
+    [SerializeField] float deltay = 0f;
     // Start is called before the first frame update
     void Start()
     {
+        myanimator = GetComponent<Animator>();
         StartCoroutine(Attack());
     }
 
@@ -50,12 +54,13 @@ public class Max : MonoBehaviour
     {
         while (true)
         {
+            myanimator.SetTrigger("Idle");
             yield return new WaitForSeconds(projectileFiringPeriod);
+            myanimator.SetTrigger("Attack");
             GameObject laser = Instantiate(laserPrefab,
-            transform.position,
+            new Vector3 (transform.position.x+deltax,transform.position.y+deltay,transform.position.z),
             Quaternion.identity) as GameObject;
             laser.GetComponent<Rigidbody2D>().velocity = new Vector2(projectileSpeed, 0);
-            
         }
     }    
 }

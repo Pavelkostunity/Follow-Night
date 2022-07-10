@@ -45,9 +45,9 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6659707069927769554}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3ae77c865cb284c4798e7026582a4866, type: 2}
+  m_Controller: {fileID: 9100000, guid: f52a28659ee58e94eb861816a7756130, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -102,11 +102,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 0.37964082}
-      - {x: -0.41151434, y: 0.3652213}
-      - {x: -0.4055714, y: -0.40493906}
-      - {x: 0.37482703, y: -0.42939425}
-      - {x: 0.4001875, y: 0.37186426}
+    - - {x: 0.12204361, y: 0.24234223}
+      - {x: 0.061403215, y: 0.07536915}
+      - {x: -0.26827282, y: -0.7405571}
+      - {x: 0.92401946, y: -0.7497573}
+      - {x: 0.8425932, y: 0.29558843}
 --- !u!114 &4118924461905674468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +150,8 @@ MonoBehaviour:
   laserPrefab: {fileID: 8737349549190918133, guid: 77446506bec3d3c4a852cfe8bc683b83, type: 3}
   projectileSpeed: 2
   projectileFiringPeriod: 2
+  deltax: -0.02
+  deltay: -0.35
 --- !u!1 &6659707070036262299
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,13 +176,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6659707070036262299}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6659707069927769564}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!212 &6659707070036262279
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -221,12 +223,12 @@ SpriteRenderer:
   m_SortingLayerID: -202644321
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1d76ea7848a6ce14791b4a5836c25397, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 59679f20126ae084db4491256b4966b6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 8, y: 4.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
