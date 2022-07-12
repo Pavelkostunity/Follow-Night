@@ -11,6 +11,7 @@ public class Boss : MonoBehaviour
     [SerializeField] int health = 100;
     [SerializeField] GameObject attackpos;
     int attackcount = 0;
+    [SerializeField] float enteringtime = 4f;
     [Header("Attack phaze")]
     [SerializeField] int numberofattacks = 6;
     [SerializeField] float timebetweenattacks = 10f;
@@ -35,7 +36,7 @@ public class Boss : MonoBehaviour
         myAnimator = GetComponent<Animator>();
         mycollider = GetComponent<BoxCollider2D>();
         inv = true;
-        StartCoroutine(Entering(4f));
+        StartCoroutine(Entering(enteringtime));
         player = FindObjectOfType<Player>();
     }
     IEnumerator Entering(float time)
