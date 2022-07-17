@@ -20,6 +20,10 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject up;
     [SerializeField] GameObject bot;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        //transform.position = FindObjectOfType<GameFlow>().ReturnTransform();
+    }
     void Start()
     {
         myRigidBody = GetComponent<Rigidbody2D>();

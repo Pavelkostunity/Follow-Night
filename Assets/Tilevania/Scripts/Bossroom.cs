@@ -24,10 +24,11 @@ public class Bossroom : MonoBehaviour
         }
         else
         {
-            bool isflat = gameObject.transform.localEulerAngles.z == 0f ||
-                gameObject.transform.localEulerAngles.z == 90f ||
-                gameObject.transform.localEulerAngles.z == -90f||
-                gameObject.transform.localEulerAngles.z == 180;
+            bool isflat = gameObject.transform.rotation == new Quaternion(0, 0, 0.707106829f, 0.707106829f) ||
+                gameObject.transform.rotation == new Quaternion(0, 0, -0.707106829f, 0.707106829f) ||
+                gameObject.transform.rotation == new Quaternion(0, 0, 0, 1) ||
+                gameObject.transform.rotation == new Quaternion(0, 0, 1, 0);
+            
             if (!isflat)
             {
                 transform.Rotate(0, 0, -0.1f);

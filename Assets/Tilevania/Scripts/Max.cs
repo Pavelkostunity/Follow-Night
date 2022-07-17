@@ -13,6 +13,7 @@ public class Max : MonoBehaviour
     [SerializeField] float deltax = 0f;
     [SerializeField] float deltay = 0f;
     public AudioClip piu;
+    [SerializeField] bool isbossfight;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,10 +56,12 @@ public class Max : MonoBehaviour
     {
         while (true)
         {
-            
+            if (!isbossfight)
+            {
+                AudioSource.PlayClipAtPoint(piu, transform.position, 0.5f);
+            }
             myanimator.SetTrigger("Idle");
             yield return new WaitForSeconds(projectileFiringPeriod);
-            AudioSource.PlayClipAtPoint(piu, transform.position, 0.5f);
             myanimator.SetTrigger("Attack");
             GameObject laser = Instantiate(laserPrefab,
             new Vector3 (transform.position.x+deltax,transform.position.y+deltay,transform.position.z),

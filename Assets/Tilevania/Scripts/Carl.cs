@@ -9,6 +9,7 @@ public class Carl : MonoBehaviour
     Animator myanimator;
     CapsuleCollider2D bigcollider;
     public AudioClip morbintime;
+    [SerializeField] bool isbossfight;
     ////в этом скрипте реализована атака
     // Start is called before the first frame update
     void Start()
@@ -35,7 +36,10 @@ public class Carl : MonoBehaviour
     IEnumerator Hit()
     {
         enemy.TurnOnInvin();
-        AudioSource.PlayClipAtPoint(morbintime, transform.position, 0.5f);
+        if (!isbossfight)
+        {
+            AudioSource.PlayClipAtPoint(morbintime, transform.position, 0.5f);
+        }
         myanimator.SetBool("CA", true);
         bigcollider.enabled = true;
         transform.position = new Vector2(transform.position.x + 0.000001f, transform.position.y);

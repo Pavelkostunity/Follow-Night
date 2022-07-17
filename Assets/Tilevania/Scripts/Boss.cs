@@ -8,6 +8,7 @@ public class Boss : MonoBehaviour
     Rigidbody2D myRigidBody;
     Animator myAnimator;
     BoxCollider2D mycollider;
+    AudioSource myaudiosourse;
     [SerializeField] int health = 100;
     [SerializeField] GameObject attackpos;
     int attackcount = 0;
@@ -36,11 +37,14 @@ public class Boss : MonoBehaviour
         myAnimator = GetComponent<Animator>();
         mycollider = GetComponent<BoxCollider2D>();
         inv = true;
+        myaudiosourse = GetComponent<AudioSource>();
         StartCoroutine(Entering(enteringtime));
         player = FindObjectOfType<Player>();
+        
     }
     IEnumerator Entering(float time)
     {
+        Startbossmusic();
         Vector3 startingPos = transform.position;
         Vector3 finalPos = attackpos.transform.position;
         float elapsedTime = 0;
@@ -200,6 +204,10 @@ public class Boss : MonoBehaviour
     private void Die()
     {
 
+    }
+    public void Startbossmusic()
+    {
+        myaudiosourse.Play();
     }
     public int GetHealth()
     {
