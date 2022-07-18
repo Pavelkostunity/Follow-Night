@@ -16,6 +16,7 @@ public class Boss : MonoBehaviour
     [Header("Attack phaze")]
     [SerializeField] int numberofattacks = 6;
     [SerializeField] float timebetweenattacks = 10f;
+    [SerializeField] float timebetweentranferattack = 5f;
     [SerializeField] Enemy carl;
     [SerializeField] Enemy max;
     [SerializeField] Enemy beam;
@@ -29,6 +30,11 @@ public class Boss : MonoBehaviour
     [SerializeField] Bossroom bossroom;
     [SerializeField] BossFightStart bossfightcontroller;
     [SerializeField] GameObject bossreachpoints;
+    [Header ("Death")]
+    [SerializeField] GameObject[] activate;
+    [SerializeField] GameObject[] deactivate;
+    [SerializeField] ParticleSystem deathvfx;
+
 
     // Start is called before the first frame update
     void Start()
@@ -62,6 +68,7 @@ public class Boss : MonoBehaviour
         Debug.Log("I'm Choosing attack");
         if (attackcount == numberofattacks)
         {
+            RoomCamera();
             StartCoroutine(Transfer());
         }
         else
@@ -76,10 +83,10 @@ public class Boss : MonoBehaviour
                     StartCoroutine(Attack2());
                     break;
                 case 3:
-                    StartCoroutine(Attack3());
+                    StartCoroutine(Attack3(5,timebetweenattacks,false));
                     break;
                 case 4:
-                    StartCoroutine(Attack4());
+                    StartCoroutine(Attack4(5,timebetweenattacks,false));
                     break;
             }
         }
@@ -99,41 +106,55 @@ public class Boss : MonoBehaviour
         Debug.Log("Attack 2");
         SpawnEnemy(enemyspawnpoints, max);
         SpawnEnemy(enemyspawnpoints, max);
-        //как сделать так чтобы они были повернуты всегда к player возможно в самом скрипте Max
         yield return new WaitForSeconds(timebetweenattacks);
         attackcount++;
         StartCoroutine(ChooseAttack());
     }
-    IEnumerator Attack3()
+    IEnumerator Attack3(int numberofbeams,float time, bool transfer)
     {
         Debug.Log("Attack 3");
-        StartCoroutine(SpawnABeam());
-        yield return new WaitForSeconds(timebetweenattacks);
+        StartCoroutine(SpawnABeam(numberofbeams));
+        yield return new WaitForSeconds(time);
         attackcount++;
-        StartCoroutine(ChooseAttack());
+        if (transfer)
+        {
+            StartCoroutine(Transfer());
+        }
+        else
+        {
+            StartCoroutine(ChooseAttack());
+        }
+        
     }
-    IEnumerator SpawnABeam()
+    IEnumerator SpawnABeam(int numberofbeam)
     {
         int j = 0;
-        while (j < 5)
+        while (j < numberofbeam)
         {
             SpawnEnemy(beamsspawnpoints, beam);
             yield return new WaitForSeconds(1f);
             j++;
         }
     }
-    IEnumerator Attack4()
+    IEnumerator Attack4(int numberofpoints, float timeb, bool transfer)
     {
         Debug.Log("Attack 4");
-        StartCoroutine(SpawnAPoint());
-        yield return new WaitForSeconds(timebetweenattacks);
+        StartCoroutine(SpawnAPoint(numberofpoints));
+        yield return new WaitForSeconds(timeb);
         attackcount++;
-        StartCoroutine(ChooseAttack());
+        if (transfer)
+        {
+            StartCoroutine(Transfer());
+        }
+        else
+        {
+            StartCoroutine(ChooseAttack());
+        }
     }
-    IEnumerator SpawnAPoint()
+    IEnumerator SpawnAPoint(int numberofpoint)
     {
         int j = 0;
-        while (j < 5)
+        while (j < numberofpoint)
         {
             Vector3 playerpos = new Vector3 (player.transform.position.x,player.transform.position.y,player.transform.position.z);
             Instantiate(point,playerpos, Quaternion.identity);
@@ -148,6 +169,28 @@ public class Boss : MonoBehaviour
     }
     IEnumerator Transfer()
     {
+        if (damageduringtranfer > 20)
+        {
+            StartCoroutine(EndTransfer());
+        }
+        else
+        {
+            int i = Mathf.RoundToInt(Random.Range(0.51f, 2.49f));
+            switch (i)
+            {
+                case 1:
+                    StartCoroutine(Attack3(2, timebetweentranferattack, true));
+                    break;
+                case 2:
+                    StartCoroutine(Attack4(3, timebetweentranferattack, true));
+                    break;
+            }
+        }
+        yield return null;
+    }
+
+    private void RoomCamera()
+    {
         Debug.Log("Transfer");
         damageduringtranfer = 0;
         bossroom.StartRolling(); // start of room rolling
@@ -155,14 +198,8 @@ public class Boss : MonoBehaviour
         myAnimator.SetBool("Idle", true);
         bossreachpoints.SetActive(true);
         inv = false;
-        // убрать боссу неуязвимость, закрутить зону, отодвинуть камеру, добавить какие-то периодичные атаки
-        while (damageduringtranfer < 20)
-        {
-            yield return null;
-        }
-        StartCoroutine(EndTransfer());
-
     }
+
     IEnumerator EndTransfer()
     {
         Debug.Log("EndTransfer");
@@ -197,13 +234,26 @@ public class Boss : MonoBehaviour
             damageduringtranfer++;
             if (health <= 0)
             {
-                Die();
+                StopAllCoroutines();
+                StartCoroutine(Die());
             }
         }
     }
-    private void Die()
+    IEnumerator Die()
     {
-
+        Time.timeScale = 0.2f;
+        deathvfx.Play();
+        yield return new WaitForSecondsRealtime(5f);
+        Time.timeScale = 1f;
+        foreach (GameObject act in activate)
+        {
+            act.SetActive(true);
+        }
+        foreach (GameObject deact in deactivate)
+        {
+            deact.SetActive(false);
+        }
+        Destroy(gameObject);
     }
     public void Startbossmusic()
     {

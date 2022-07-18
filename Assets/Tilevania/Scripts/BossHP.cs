@@ -6,15 +6,16 @@ using UnityEngine.UI;
 public class BossHP : MonoBehaviour
 {
     [SerializeField] Boss boss;
-    Text lives;
+    Slider lives;
     // Start is called before the first frame update
     void Start()
     {
-        lives = GetComponent<Text>();
-        lives.enabled = true;
+       lives = GetComponent<Slider>();
+       lives.enabled = true;
+       lives.maxValue = boss.GetHealth();
     }
     void Update()
     {
-        lives.text = boss.GetHealth().ToString();
+        lives.value = boss.GetHealth();
     }
 }

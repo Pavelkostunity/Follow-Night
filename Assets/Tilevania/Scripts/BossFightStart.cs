@@ -5,11 +5,13 @@ using UnityEngine;
 public class BossFightStart : MonoBehaviour
 {
     Animator myanimator;
+    BoxCollider2D mycollider;
     [SerializeField] GameObject[] activate;
     [SerializeField] GameObject[] deactivate;
     private void Start()
     {
         myanimator = GetComponent<Animator>();
+        mycollider = GetComponent<BoxCollider2D>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -22,6 +24,7 @@ public class BossFightStart : MonoBehaviour
         {
             deact.SetActive(false);
         }
+        mycollider.enabled = false;
     }
     public void StartTransfer()
     {
