@@ -16,7 +16,6 @@ public class Carl : MonoBehaviour
     {
         myanimator = GetComponent<Animator>();
         enemy = GetComponent<Enemy>();
-        bigcollider = GetComponent<CapsuleCollider2D>();
         StartCoroutine(Attack());
     }
 
@@ -41,11 +40,9 @@ public class Carl : MonoBehaviour
             AudioSource.PlayClipAtPoint(morbintime, transform.position, 0.5f);
         }
         myanimator.SetBool("CA", true);
-        bigcollider.enabled = true;
         transform.position = new Vector2(transform.position.x + 0.000001f, transform.position.y);
         yield return new WaitForSeconds(1f);
         myanimator.SetBool("CA", false);
-        bigcollider.enabled = false;
         transform.position = new Vector2(transform.position.x - 0.000001f, transform.position.y);
         enemy.TurnOffInvin();
     }

@@ -8,13 +8,16 @@ public class BossFightStart : MonoBehaviour
     BoxCollider2D mycollider;
     [SerializeField] GameObject[] activate;
     [SerializeField] GameObject[] deactivate;
+    GameFlow gameflow;
     private void Start()
     {
         myanimator = GetComponent<Animator>();
         mycollider = GetComponent<BoxCollider2D>();
+        gameflow = FindObjectOfType<GameFlow>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        gameflow.Stopmusic();
         myanimator.SetBool("BossFight", true);
         foreach (GameObject act in activate)
         {

@@ -14,11 +14,13 @@ public class Max : MonoBehaviour
     [SerializeField] float deltay = 0f;
     public AudioClip piu;
     [SerializeField] bool isbossfight;
+    Transform player;
     // Start is called before the first frame update
     void Start()
     {
         myanimator = GetComponent<Animator>();
         StartCoroutine(Attack());
+        player = FindObjectOfType<Player>().transform;
     }
 
     // Update is called once per frame
@@ -29,8 +31,7 @@ public class Max : MonoBehaviour
 
     private void FindPlayer()
     {
-        Player player = FindObjectOfType<Player>();
-        if (transform.position.x > player.transform.position.x)
+        if (transform.position.x > player.position.x)
         {
             if (isfacingright)
             {
@@ -48,7 +49,6 @@ public class Max : MonoBehaviour
                 projectileSpeed = -projectileSpeed;
             }
         }
-        //how to turn to player
     }
 
 
@@ -56,10 +56,7 @@ public class Max : MonoBehaviour
     {
         while (true)
         {
-            if (!isbossfight)
-            {
-                AudioSource.PlayClipAtPoint(piu, transform.position, 0.5f);
-            }
+            
             myanimator.SetTrigger("Idle");
             yield return new WaitForSeconds(projectileFiringPeriod);
             myanimator.SetTrigger("Attack");
@@ -67,6 +64,11 @@ public class Max : MonoBehaviour
             new Vector3 (transform.position.x+deltax,transform.position.y+deltay,transform.position.z),
             Quaternion.identity) as GameObject;
             laser.GetComponent<Rigidbody2D>().velocity = new Vector2(projectileSpeed, 0);
+            if (!isbossfight)
+            {
+                AudioSource.PlayClipAtPoint(piu, transform.position, 0.5f);
+            }
         }
-    }    
+    }
+    
 }

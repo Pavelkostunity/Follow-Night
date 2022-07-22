@@ -8,14 +8,12 @@ public class Beam : MonoBehaviour
     [SerializeField] float delaybeforedestroy = 2f;
     Enemy enemy;
     Animator myanimator;
-    BoxCollider2D bigcollider;
     ////в этом скрипте реализована атака
     // Start is called before the first frame update
     void Start()
     {
         myanimator = GetComponent<Animator>();
         enemy = GetComponent<Enemy>();
-        bigcollider = GetComponent<BoxCollider2D>();
         StartCoroutine(Attack());
     }
 
@@ -34,7 +32,6 @@ public class Beam : MonoBehaviour
     IEnumerator Hit()
     {
         myanimator.SetBool("CA", true);
-        bigcollider.enabled = true;
         transform.position = new Vector2(transform.position.x + 0.000001f, transform.position.y);
         yield return new WaitForSeconds(delaybeforedestroy);
         Destroy(gameObject);
