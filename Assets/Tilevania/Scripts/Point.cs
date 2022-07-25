@@ -34,9 +34,11 @@ public class Point : MonoBehaviour
     IEnumerator Hit()
     {
         myanimator.SetBool("CA", true);
-        bigcollider.enabled = true;
         transform.position = new Vector2(transform.position.x + 0.000001f, transform.position.y);
         yield return new WaitForSeconds(delaybeforedestroy);
+    }
+    public void Removepoint()
+    {
         Destroy(gameObject);
     }
 }
