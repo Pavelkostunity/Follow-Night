@@ -16,6 +16,6 @@ public class Healthbar : MonoBehaviour
     }
     void Update()
     {
-        lives.text = player.GetHealth().ToString();
+        lives.text = player.GetHealth().ToString() + " HP";
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -13,19 +12,21 @@ public class Player : MonoBehaviour
     BoxCollider2D myFeet;
     PolygonCollider2D myhitbox;
     [SerializeField] int health = 200;
-    [SerializeField] Vector2 deathkick = new Vector2(25f,25f);
     [Header("Sword Settings")]
     [SerializeField] GameObject sword;
     [SerializeField] GameObject horz;
     [SerializeField] GameObject up;
     [SerializeField] GameObject bot;
+    GameFlow gameflow;
     // Start is called before the first frame update
     private void Awake()
     {
-        //transform.position = FindObjectOfType<GameFlow>().ReturnTransform();
+
     }
     void Start()
     {
+        gameflow = FindObjectOfType<GameFlow>();
+        transform.position = gameflow.ReturnTransform();
         myRigidBody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myFeet = GetComponent<BoxCollider2D>();
@@ -122,8 +123,7 @@ public class Player : MonoBehaviour
         FindObjectOfType<YouDead>().ShowDeathText();
         yield return new WaitForSecondsRealtime(2f);
         Time.timeScale = 1f;
-        var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+        gameflow.StartScene();
     }
     public void Pushback(Vector2 pushway)
     {

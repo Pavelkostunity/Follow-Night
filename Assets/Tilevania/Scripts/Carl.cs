@@ -37,7 +37,7 @@ public class Carl : MonoBehaviour
         enemy.TurnOnInvin();
         if (!isbossfight)
         {
-            AudioSource.PlayClipAtPoint(morbintime, transform.position, 0.5f);
+            AudioSource.PlayClipAtPoint(morbintime, transform.position, 3f);
         }
         myanimator.SetBool("CA", true);
         transform.position = new Vector2(transform.position.x + 0.000001f, transform.position.y);

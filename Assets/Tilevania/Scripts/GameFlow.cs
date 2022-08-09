@@ -2,43 +2,63 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameFlow : MonoBehaviour
 {
+    [SerializeField] GameObject Startpoint;
+    [SerializeField] GameObject Bosspoint;
     Vector3 spawnpoint;
-    AudioSource myaudiosourse;
+    [SerializeField] bool isbossfight = false;
+    PlayAudio musicplayer;
+
     private void Awake()
     {
-        spawnpoint = transform.position;
-        DontDestroyOnLoad(this.gameObject);
-        myaudiosourse = GetComponent<AudioSource>();
+        SetUpSingleton();
+        RemembertheTransform(isbossfight);
+        musicplayer = GetComponent<PlayAudio>();
+    }
+    private void SetUpSingleton()
+    {
+        int numberGameSessions = FindObjectsOfType<GameFlow>().Length;
+        if (numberGameSessions > 1)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+        }
     }
     // Start is called before the first frame update
-    void Start()
+    public void SetSpawnpoint(bool isboss)
     {
-        Startmusic();
+        isbossfight = isboss;
+        RemembertheTransform(isboss);
     }
-
-    private void Startmusic()
+    public void RemembertheTransform(bool isboss)
     {
-         myaudiosourse.Play();
+        if (isbossfight)
+        {
+            spawnpoint = Bosspoint.transform.position;
+            Debug.Log("I've set to spawn at boss pit");
+        }
+        else
+        {
+            spawnpoint = Startpoint.transform.position;
+        }
     }
-
-    public void RemembertheTransform(Vector3 checkpoint)
+    public void StartScene()
     {
-        spawnpoint = checkpoint;
+        var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
     }
     public Vector3 ReturnTransform()
     {
         return spawnpoint;
     }
-    public void Stopmusic()
+    public void ExitGame()
     {
-        myaudiosourse.Stop();
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        Application.Quit();
+    }    
 }

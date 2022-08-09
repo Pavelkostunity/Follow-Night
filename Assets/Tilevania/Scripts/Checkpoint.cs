@@ -10,14 +10,8 @@ public class Checkpoint : MonoBehaviour
     {
         gameflow = FindObjectOfType<GameFlow>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        gameflow.RemembertheTransform(transform.position);
+        gameflow.SetSpawnpoint(true);
     }
 }

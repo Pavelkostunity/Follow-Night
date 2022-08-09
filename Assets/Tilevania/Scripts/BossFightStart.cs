@@ -9,15 +9,16 @@ public class BossFightStart : MonoBehaviour
     [SerializeField] GameObject[] activate;
     [SerializeField] GameObject[] deactivate;
     GameFlow gameflow;
+    PlayAudio playaudio;
     private void Start()
     {
         myanimator = GetComponent<Animator>();
         mycollider = GetComponent<BoxCollider2D>();
-        gameflow = FindObjectOfType<GameFlow>();
+        playaudio= FindObjectOfType<PlayAudio>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        gameflow.Stopmusic();
+        playaudio.Stopmusic();
         myanimator.SetBool("BossFight", true);
         foreach (GameObject act in activate)
         {
@@ -25,6 +26,10 @@ public class BossFightStart : MonoBehaviour
         }
         foreach (GameObject deact in deactivate)
         {
+            if (deact.transform == null)
+            {
+                return;
+            }
             deact.SetActive(false);
         }
         mycollider.enabled = false;

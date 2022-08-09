@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour
         if (inv == false)
         {
             health -= damageDealer.GetDamage();
+
             if (health <= 0)
             {
                 Die();
