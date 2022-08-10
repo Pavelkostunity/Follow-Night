@@ -10,13 +10,11 @@ public class GameFlow : MonoBehaviour
     [SerializeField] GameObject Bosspoint;
     Vector3 spawnpoint;
     [SerializeField] bool isbossfight = false;
-    PlayAudio musicplayer;
 
     private void Awake()
     {
         SetUpSingleton();
-        RemembertheTransform(isbossfight);
-        musicplayer = GetComponent<PlayAudio>();
+        RemembertheTransform();
     }
     private void SetUpSingleton()
     {
@@ -30,18 +28,16 @@ public class GameFlow : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-    // Start is called before the first frame update
     public void SetSpawnpoint(bool isboss)
     {
         isbossfight = isboss;
-        RemembertheTransform(isboss);
+        RemembertheTransform();
     }
-    public void RemembertheTransform(bool isboss)
+    public void RemembertheTransform()
     {
         if (isbossfight)
         {
             spawnpoint = Bosspoint.transform.position;
-            Debug.Log("I've set to spawn at boss pit");
         }
         else
         {
@@ -52,6 +48,7 @@ public class GameFlow : MonoBehaviour
     {
         var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
+        Time.timeScale = 1f;
     }
     public Vector3 ReturnTransform()
     {

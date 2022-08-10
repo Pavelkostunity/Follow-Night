@@ -18,11 +18,6 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject up;
     [SerializeField] GameObject bot;
     GameFlow gameflow;
-    // Start is called before the first frame update
-    private void Awake()
-    {
-
-    }
     void Start()
     {
         gameflow = FindObjectOfType<GameFlow>();

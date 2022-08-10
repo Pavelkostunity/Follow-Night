@@ -5,9 +5,7 @@ using UnityEngine;
 public class Boss : MonoBehaviour
 {
     [Header("Common Stuff")]
-    Rigidbody2D myRigidBody;
     Animator myAnimator;
-    BoxCollider2D mycollider;
     AudioSource myaudiosourse;
     [SerializeField] int health = 100;
     [SerializeField] GameObject attackpos;
@@ -39,9 +37,7 @@ public class Boss : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        myRigidBody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
-        mycollider = GetComponent<BoxCollider2D>();
         inv = true;
         myaudiosourse = GetComponent<AudioSource>();
         StartCoroutine(Entering(enteringtime));
@@ -65,7 +61,6 @@ public class Boss : MonoBehaviour
     }
     IEnumerator ChooseAttack()
     {
-        Debug.Log("I'm Choosing attack");
         if (attackcount == numberofattacks)
         {
             RoomCamera();
@@ -94,7 +89,6 @@ public class Boss : MonoBehaviour
     }
     IEnumerator Attack1()
     {
-        Debug.Log("Attack 1");
         SpawnEnemy(enemyspawnpoints, carl) ;
         SpawnEnemy(enemyspawnpoints, carl);
         yield return new WaitForSeconds(timebetweenattacks);
@@ -103,7 +97,6 @@ public class Boss : MonoBehaviour
     }
     IEnumerator Attack2()
     {
-        Debug.Log("Attack 2");
         SpawnEnemy(enemyspawnpoints, max);
         SpawnEnemy(enemyspawnpoints, max);
         yield return new WaitForSeconds(timebetweenattacks);
@@ -112,7 +105,6 @@ public class Boss : MonoBehaviour
     }
     IEnumerator Attack3(int numberofbeams,float time, bool transfer)
     {
-        Debug.Log("Attack 3");
         StartCoroutine(SpawnABeam(numberofbeams));
         yield return new WaitForSeconds(time);
         attackcount++;
@@ -138,7 +130,6 @@ public class Boss : MonoBehaviour
     }
     IEnumerator Attack4(int numberofpoints, float timeb, bool transfer)
     {
-        Debug.Log("Attack 4");
         StartCoroutine(SpawnAPoint(numberofpoints));
         yield return new WaitForSeconds(timeb);
         attackcount++;
@@ -191,7 +182,6 @@ public class Boss : MonoBehaviour
 
     private void RoomCamera()
     {
-        Debug.Log("Transfer");
         damageduringtranfer = 0;
         bossroom.StartRolling(); // start of room rolling
         bossfightcontroller.StartTransfer(); //camera movement
@@ -202,7 +192,6 @@ public class Boss : MonoBehaviour
 
     IEnumerator EndTransfer()
     {
-        Debug.Log("EndTransfer");
         bossroom.StopRolling();
         bossfightcontroller.EndTranfer();
         myAnimator.SetBool("Idle", false);
@@ -211,11 +200,6 @@ public class Boss : MonoBehaviour
         yield return new WaitForSeconds(3f);
         attackcount = 0;
         StartCoroutine(ChooseAttack());
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
       private void OnTriggerEnter2D(Collider2D other)
     {
@@ -244,7 +228,7 @@ public class Boss : MonoBehaviour
         Time.timeScale = 0.2f;
         deathvfx.Play();
         yield return new WaitForSecondsRealtime(5f);
-        Time.timeScale = 1f;
+        Time.timeScale = 0f;
         foreach (GameObject act in activate)
         {
             act.SetActive(true);
