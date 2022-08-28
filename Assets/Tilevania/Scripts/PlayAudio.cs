@@ -6,31 +6,32 @@ public class PlayAudio : MonoBehaviour
 {
     public AudioSource audioSource;
     public AudioClip[] audioClipArray;
-    AudioClip lastClip;
+    bool isboss;
     void Start()
     {
+        isboss = false;
         PlayMusic();
     }
 
     public void PlayMusic()
     {
-        audioSource.PlayOneShot(RandomClip());
-    }
-
-    AudioClip RandomClip()
-    {
-        int attempts = 3;
         AudioClip newClip = audioClipArray[Random.Range(0, audioClipArray.Length)];
-        while (newClip == lastClip && attempts > 0)
+        audioSource.PlayOneShot(newClip);
+    }
+    private void Update()
+    {
+        if (!audioSource.isPlaying)
         {
-            newClip = audioClipArray[Random.Range(0, audioClipArray.Length)];
-            attempts--;
+            if (!isboss)
+            {
+                PlayMusic();
+            }
+
         }
-        lastClip = newClip;
-        return newClip;
     }
     public void Stopmusic()
     {
         audioSource.Stop();
+        isboss = true;
     }
 }

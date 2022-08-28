@@ -26,7 +26,7 @@ public class BossFightStart : MonoBehaviour
         }
         foreach (GameObject deact in deactivate)
         {
-            if (deact.transform == null)
+            if (deact == null)
             {
                 return;
             }
