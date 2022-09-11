@@ -137785,10 +137785,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 80819690}
+    - target: {fileID: 7851847263142170915, guid: a726a75d53656024db7cb49d0397e8d1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8474231328431609385, guid: a726a75d53656024db7cb49d0397e8d1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 80819688}
+    - target: {fileID: 8576011163561824944, guid: a726a75d53656024db7cb49d0397e8d1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a726a75d53656024db7cb49d0397e8d1, type: 3}
 --- !u!1 &1933173363
@@ -139379,7 +139387,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1151793068842262589, guid: 57063e4936097f0498f36b496f900a5c, type: 3}
       propertyPath: health
-      value: 1
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1151793068842262589, guid: 57063e4936097f0498f36b496f900a5c, type: 3}
       propertyPath: bossroom
