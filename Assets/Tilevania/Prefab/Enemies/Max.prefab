@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2768718669553951304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8630391678468360847}
+  m_Layer: 10
+  m_Name: Gun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8630391678468360847
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2768718669553951304}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.665, y: -0.407, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6659707069927769564}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6659707069927769554
 GameObject:
   m_ObjectHideFlags: 0
@@ -35,6 +65,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6659707070036262298}
+  - {fileID: 8630391678468360847}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -103,11 +134,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.12204361, y: 0.24234223}
-      - {x: 0.061403215, y: 0.07536915}
-      - {x: -0.26827282, y: -0.7405571}
-      - {x: 0.92401946, y: -0.7497573}
-      - {x: 0.8425932, y: 0.29558843}
+    - - {x: 0.12204361, y: -0.057647467}
+      - {x: -0.0067768693, y: -0.22462055}
+      - {x: -0.20009273, y: -0.7814647}
+      - {x: 0.6649405, y: -0.81793666}
+      - {x: 0.5971441, y: -0.08621663}
 --- !u!114 &4118924461905674468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,9 +182,11 @@ MonoBehaviour:
   laserPrefab: {fileID: 8737349549190918133, guid: 77446506bec3d3c4a852cfe8bc683b83, type: 3}
   projectileSpeed: 2
   projectileFiringPeriod: 2
-  deltax: -0.02
-  deltay: -0.35
+  deltax: -0.43
+  deltay: -0.43
   piu: {fileID: 8300000, guid: 610557c5c35b865449c419bfc24072df, type: 3}
+  isbossfight: 0
+  gun: {fileID: 2768718669553951304}
 --- !u!82 &778701599330452383
 AudioSource:
   m_ObjectHideFlags: 0
@@ -275,7 +308,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6659707070036262299}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.29, y: -0.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6659707069927769564}
@@ -321,7 +354,7 @@ SpriteRenderer:
   m_SortingLayerID: -202644321
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 59679f20126ae084db4491256b4966b6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 71578de6daa32a14cac6dbf2019385dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -15,6 +15,7 @@ public class Max : MonoBehaviour
     public AudioClip piu;
     [SerializeField] bool isbossfight;
     Transform player;
+    [SerializeField] GameObject gun;
     // Start is called before the first frame update
     void Start()
     {
@@ -61,7 +62,7 @@ public class Max : MonoBehaviour
             yield return new WaitForSeconds(projectileFiringPeriod);
             myanimator.SetTrigger("Attack");
             GameObject laser = Instantiate(laserPrefab,
-            new Vector3 (transform.position.x+deltax,transform.position.y+deltay,transform.position.z),
+            new Vector3 (gun.transform.position.x,gun.transform.position.y,gun.transform.position.z),
             Quaternion.identity) as GameObject;
             laser.GetComponent<Rigidbody2D>().velocity = new Vector2(projectileSpeed, 0);
             if (!isbossfight)
